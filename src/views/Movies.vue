@@ -3,87 +3,72 @@
     <div class="text-center">
       <h1 class="mt-3 mb-5">Movies</h1>
     </div>
-    <v-container>
-      <v-row>
-        <v-col cols="12" md="4">
-          <v-card max-width="344" class="mx-auto mb-5">
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="headline">The Shawshank Redemption</v-list-item-title>
-                <v-list-item-subtitle>Crime, Drama</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+    <v-layout row wrap>
+      <v-flex xs12 md6 lg4 v-for="movie in movies" :key="movie.title">
+        <v-card max-width="344" class="mx-auto mb-5">
+          <v-list-item class="movie">
+            <v-list-item-content>
+              <v-list-item-title class="headline ">{{ movie.title }}</v-list-item-title>
+              <v-list-item-subtitle>{{ movie.genre }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
 
-            <v-img
-              src="https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"
-              height="500"
-            ></v-img>
+          <v-img :src="movie.poster" height="300" />
 
-            <v-card-text>Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.</v-card-text>
-
-            <v-card-actions>
-              <v-btn text color="deep-purple accent-4">Follow</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn text color="deep-purple accent-4">Stars</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" md="4">
-          <v-card max-width="344" class="mx-auto mb-5">
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="headline">Forrest Gump</v-list-item-title>
-                <v-list-item-subtitle>Drama</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-img
-              src="https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"
-              height="500"
-            ></v-img>
-
-            <v-card-text>The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate and other historical events unfold through the perspective of an Alabama man with an IQ of 75, whose only desire is to be reunited with his childhood sweetheart.</v-card-text>
-
-            <v-card-actions>
-              <v-btn text color="deep-purple accent-4">Follow</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn text color="deep-purple accent-4">Stars</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" md="4">
-          <v-card max-width="344" class="mx-auto mb-5">
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="headline">Pulp Fiction</v-list-item-title>
-                <v-list-item-subtitle>Crime, Drama</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-img
-              src="https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg"
-              height="500"
-            ></v-img>
-
-            <v-card-text>The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.</v-card-text>
-
-            <v-card-actions>
-              <v-btn text color="deep-purple accent-4">Follow</v-btn>
-              <v-spacer></v-spacer>
-              <v-btn text color="deep-purple accent-4">Stars</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+          <v-card-text v-if="movie.description<100">{{ movie.description }}</v-card-text>
+          <v-card-text v-else>{{ movie.description.substring(0,100)+".." }}</v-card-text>
+          <v-card-text>Follow any of the following:</v-card-text>
+          <v-card-actions>
+            <v-btn text color="deep-purple accent-4">Movie</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn text color="deep-purple accent-4">Genre</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn text color="deep-purple accent-4">Stars</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
-
+<div v-if="username.length<8">Welcome, {{ username }}</div>
+  <div v-else>Welcome, {{ username.substring(0,8)+".." }}</div>
 
 <script>
 // import MovieCards from "../components/MovieCards";
-export default {};
+export default {
+  data() {
+    return {
+      movies: [
+        {
+          title: "Pulp Fiction",
+          genre: "Crime",
+          poster: "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
+          description:
+            "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+        },
+        {
+          title: "The Shawshank Redemption",
+          genre: "Crime",
+          poster: "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+          description:
+            "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+        },
+        {
+          title: "Forrest Gump",
+          genre: "Drama",
+          poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+          description:
+            "The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate and other historical events unfold through the perspective of an Alabama man with an IQ of 75, whose only desire is to be reunited with his childhood sweetheart."
+        }
+      ],
+    };
+  },
+};
 </script>
+
+<style>
+.movie {
+  background-color: #F44336;
+}
+</style>

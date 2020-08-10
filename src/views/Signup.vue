@@ -6,12 +6,13 @@
     </v-card-title>
     <v-card-text>
       <v-form>
-        <v-text-field 
-        label="Email" 
-        prepend-icon="mdi-email" 
-        v-model="email" 
-        :rules="emailRules" 
-        required/>
+        <v-text-field
+          label="Email"
+          prepend-icon="mdi-email"
+          v-model="email"
+          :rules="emailRules"
+          required
+        />
         <v-text-field
           :type="showPassword ? 'text' : 'password'"
           label="Password"
@@ -32,13 +33,13 @@
     <v-diveder></v-diveder>
     <v-card-actions>
       <v-btn
-      v-for="link in links"
-      :key="`${link.label}-signup-link`" 
-      color="primary"
-      :to="link.url"
-      >
-      Already have an account?
-      </v-btn>
+        v-for="link in links"
+        :key="`${link.label}-signup-link`"
+        color="primary"
+        :to="link.url"
+      >Already have an account?</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn color="success">Submit</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -49,17 +50,25 @@ export default {
   data() {
     return {
       showPassword: false,
-      links: [{
-        label: "Login",
-        url: "/login"
-      }],
-      email: '',
-      emailRules:[
-        value => !!value || 'Email is required',
-        value => !!value.indexOf('@') !== 0 || 'Email should have a username.',
-        value => value.includes('@') || 'Email should include an @ symbol.',
-        value => value.indexOf('.') - value.indexOf('@') > 1 || 'Email should contain a valid domain.'
-      ]
+      links: [
+        {
+          label: "Login",
+          url: "/login",
+        },
+      ],
+      email: "",
+      emailRules: [
+        (value) => !!value || "Email is required",
+        (value) =>
+          !!value.indexOf("@") !== 0 || "Email should have a username.",
+        (value) => value.includes("@") || "Email should include an @ symbol.",
+        (value) =>
+          value.indexOf(".") - value.indexOf("@") > 1 ||
+          "Email should contain a valid domain.",
+        (value) =>
+          value.indexOf(".") <= value.length - 3 ||
+          "Email should contain a valid domain.",
+      ],
     };
   },
 };
