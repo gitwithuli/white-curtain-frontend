@@ -6,7 +6,12 @@
     </v-card-title>
     <v-card-text>
       <v-form>
-        <v-text-field label="Email" prepend-icon="mdi-email" />
+        <v-text-field 
+        label="Email" 
+        prepend-icon="mdi-email" 
+        v-model="email" 
+        :rules="emailRules" 
+        required/>
         <v-text-field
           :type="showPassword ? 'text' : 'password'"
           label="Password"
@@ -47,7 +52,14 @@ export default {
       links: [{
         label: "Login",
         url: "/login"
-      }]
+      }],
+      email: '',
+      emailRules:[
+        value => !!value || 'Email is required',
+        value => !!value.indexOf('@') !== 0 || 'Email should have a username.',
+        value => value.includes('@') || 'Email should include an @ symbol.',
+        value => value.indexOf('.') - value.indexOf('@') > 1 || 'Email should contain a valid domain.'
+      ]
     };
   },
 };
