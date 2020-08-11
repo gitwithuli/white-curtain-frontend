@@ -14,6 +14,7 @@
           required
         />
         <v-text-field
+          v-model="password"
           :type="showPassword ? 'text' : 'password'"
           label="Password"
           prepend-icon="mdi-lock"
@@ -22,6 +23,7 @@
             !showPassword"
         />
         <v-text-field
+          v-model="password_confirmation"
           :type="showPassword ? 'text' : 'password'"
           label="Password Confirmation"
           prepend-icon="mdi-lock"
@@ -30,7 +32,7 @@
         />
       </v-form>
     </v-card-text>
-    <v-diveder></v-diveder>
+    <v-divider></v-divider>
     <v-card-actions>
       <v-btn
         v-for="link in links"
@@ -39,7 +41,7 @@
         :to="link.url"
       >Already have an account?</v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="success">Submit</v-btn>
+      <v-btn color="success" @click.prevent="signUp()">Submit</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -49,6 +51,9 @@ export default {
   name: "RegisterPage",
   data() {
     return {
+      email: "",
+      password: "",
+      password_confirmation: "",
       showPassword: false,
       links: [
         {
@@ -70,6 +75,26 @@ export default {
           "Email should contain a valid domain.",
       ],
     };
+  },
+
+  methods: {
+    signUp() {
+
+      this.$store
+        .dispatch("signUp", {
+          user: {
+            email: this.email,
+            password: this.password,
+            password_confirmation: this.password_confirmation,
+          },
+        })
+        .then((success) => {
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          this.error = true;
+        });
+    },
   },
 };
 </script>
