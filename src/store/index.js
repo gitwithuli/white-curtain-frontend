@@ -13,7 +13,12 @@ export default new Vuex.Store({
     login: ({ commit }, payload) => {
       return new Promise((resolve, reject) => {
         Axios.post(`login`, payload).then(({ data, status }) => {
-          if (status === 200) {
+          const token = data.jwt
+          Axios.interceptors.request.use(function (config) {
+            config.headers.Authorization = `Bearer ${token})`
+            return config
+         })
+          if (status === 201) {
             resolve(true);
           }
         }).catch(error => {

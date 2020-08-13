@@ -1,10 +1,10 @@
+
 <template>
   <!-- Login Module -->
   <v-card width="400" class="mx-auto mt-5">
     <v-card-title class="pb-0">
       <h1 class="display-1">Login</h1>
     </v-card-title>
-    <v-alert color="error" :value="error" icon="mdi-close">The email or the password are incorrect.</v-alert>
     <v-card-text>
       <v-form>
         <v-text-field v-model="email" label="Email" prepend-icon="mdi-email" />
@@ -55,7 +55,6 @@ export default {
 
   methods: {
     login() {
-      
       this.$store
         .dispatch("login", {
           auth: {
@@ -64,9 +63,22 @@ export default {
           },
         })
         .then((success) => {
-          this.$router.push("/");
+          this.$router.push("/movies");
+          this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Logged in successfully.",
+            text: "Welcome back to White Curtain.",
+          });
         })
         .catch((error) => {
+          console.log(error);
+          this.$notify({
+            group: "foo",
+            type: "error",
+            title: "Could not logged in.",
+            text: "Please check your credentials.",
+          });
           this.error = true;
         });
     },

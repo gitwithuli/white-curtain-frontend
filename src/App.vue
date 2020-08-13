@@ -30,6 +30,7 @@
           >
 
           {{ link.label }}</v-btn>
+          <notifications position="bottom right" group="foo" />
           <v-flex primary lighten-2 py-4 text-center white--text xs12>
             {{ new Date().getFullYear() }} —
             <strong>White Curtain</strong>

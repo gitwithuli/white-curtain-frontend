@@ -23,11 +23,11 @@
 
           <v-card-text>Follow any of the following:</v-card-text>
           <v-card-actions>
-            <v-btn text color="deep-purple accent-4">Movie</v-btn>
+            <v-btn color="info">Movie</v-btn>
             <v-spacer></v-spacer>
-            <v-btn text color="deep-purple accent-4">Genre</v-btn>
+            <v-btn color="info">Genre</v-btn>
             <v-spacer></v-spacer>
-            <v-btn text color="deep-purple accent-4">Stars</v-btn>
+            <v-btn color="info">Stars</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>

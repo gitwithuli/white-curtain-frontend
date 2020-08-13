@@ -79,7 +79,6 @@ export default {
 
   methods: {
     signUp() {
-
       this.$store
         .dispatch("signUp", {
           user: {
@@ -89,7 +88,14 @@ export default {
           },
         })
         .then((success) => {
-          this.$router.push("/");
+          this.$router.push("/movies");
+          this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Signed up successfully.",
+            text: "Welcome to White Curtain.",
+          });
+          
         })
         .catch((error) => {
           this.error = true;
