@@ -9,7 +9,7 @@
           <v-list-item class="movie">
             <v-list-item-content>
               <v-list-item-title class="headline">{{ movie.title }}</v-list-item-title>
-              <v-list-item-subtitle>{{ movie.genre }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ movie.genre.name }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
@@ -22,8 +22,8 @@
           <v-card-text v-else>{{ movie.stars.substring(0,50)+".." }}</v-card-text>
 
           <v-card-text>Follow any of the following:</v-card-text>
-          <v-card-actions>
-            <v-btn color="info">Movie</v-btn>
+          <v-card-actions v-if="isLoggedIn">
+            <v-btn color="info" @click="followMovie(movie.id)">Movie</v-btn>
             <v-spacer></v-spacer>
             <v-btn color="info">Genre</v-btn>
             <v-spacer></v-spacer>
@@ -38,40 +38,23 @@
 
 <script>
 // import MovieCards from "../components/MovieCards";
-export default {
-  data() {
-    return {
-      movies: [
-        {
-          title: "Pulp Fiction",
-          genre: "Crime",
-          stars: "Tim Roth, Amanda Plummer, Laura Lovelace, John Travolta",
-          poster:
-            "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
-          description:
-            "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-        },
-        {
-          title: "The Shawshank Redemption",
-          genre: "Crime",
-          stars: "Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler",
-          poster:
-            "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
-          description:
-            "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-        },
-        {
-          title: "Forrest Gump",
-          genre: "Drama",
-          stars: "Tom Hanks, Rebecca Williams, Sally Field, Michael Conner Humphreys",
-          poster:
-            "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-          description:
-            "The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate and other historical events unfold through the perspective of an Alabama man with an IQ of 75, whose only desire is to be reunited with his childhood sweetheart.",
-        },
-      ],
-    };
+export default {  
+  computed: {
+    movies(){
+      return this.$store.getters.movies
+    },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    }
   },
+  created(){
+    this.$store.dispatch("getMovies")
+  },
+  methods: {
+    followMovie(id) {
+      this.$store.dispatch('followMovie', id)
+    }
+  }
 };
 </script>
 

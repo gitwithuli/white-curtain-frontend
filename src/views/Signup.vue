@@ -5,7 +5,7 @@
       <h1 class="display-1 mb-5">Sign up</h1>
     </v-card-title>
     <v-card-text>
-      <v-form>
+      <v-form v-model="isFormValid">
         <v-text-field
           label="Email"
           prepend-icon="mdi-email"
@@ -13,17 +13,23 @@
           :rules="emailRules"
           required
         />
+
         <v-text-field
+          ref="password"
           v-model="password"
           :type="showPassword ? 'text' : 'password'"
           label="Password"
+          :rules="passwordRules"
           prepend-icon="mdi-lock"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           @click:append="showPassword = 
             !showPassword"
         />
+
         <v-text-field
+          v-validate="'required|confirmed:password'"
           v-model="password_confirmation"
+          :rules="passwordRules"
           :type="showPassword ? 'text' : 'password'"
           label="Password Confirmation"
           prepend-icon="mdi-lock"
@@ -41,7 +47,7 @@
         :to="link.url"
       >Already have an account?</v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="success" @click.prevent="signUp()">Submit</v-btn>
+      <v-btn color="success" :disabled="!isFormValid" @click.prevent="signUp()">Submit</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -55,6 +61,7 @@ export default {
       password: "",
       password_confirmation: "",
       showPassword: false,
+      isFormValid: false,
       links: [
         {
           label: "Login",
@@ -74,6 +81,16 @@ export default {
           value.indexOf(".") <= value.length - 3 ||
           "Email should contain a valid domain.",
       ],
+      passwordRules: [
+        (value) => !!value || "Required.",
+        (value) => {
+          const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+          return (
+            pattern.test(value) ||
+            "Min. 8 characters with at least one capital letter, a number and a special character."
+          );
+        }
+      ]
     };
   },
 
@@ -102,5 +119,8 @@ export default {
         });
     },
   },
+
+  
 };
+
 </script>

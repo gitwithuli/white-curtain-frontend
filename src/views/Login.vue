@@ -52,7 +52,18 @@ export default {
       ],
     };
   },
-
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    }
+  },
+  watch: {
+    isLoggedIn(value) {
+      if (value) {
+        this.$router.replace('/movies')
+      }
+    }
+  },
   methods: {
     login() {
       this.$store
@@ -63,7 +74,6 @@ export default {
           },
         })
         .then((success) => {
-          this.$router.push("/movies");
           this.$notify({
             group: "foo",
             type: "warn",
