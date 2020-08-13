@@ -43,18 +43,11 @@ export default new Vuex.Store({
 
           // make call to /users/me
           Axios.get(`users/me`).then((response) => {
-            console.log(response)
-            const follows = response.data.data.data.map((follow) => {
-              // const u = {
-              //   ...follow.attributes
-              // }
-              // console.log(u)
-              // return u
-              console.log(follow);
-            })
-            commit('setUser', follows)
+            const user = response.data.data
+            return user
+            
           })
-
+          commit('setUser', user)
           //  tell your app that the user is logged in
           commit('setAuthenticationStatus', true)
         }).catch(error => {
