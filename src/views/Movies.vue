@@ -5,7 +5,7 @@
     </div>
     <v-layout row wrap>
       <v-flex xs12 md6 lg4 v-for="movie in movies" :key="movie.title">
-        <v-card max-width="344" class="mx-auto mb-5">
+        <v-card max-width="344" class="mx-auto mb-5" @click="$router.push(`/movies/${movie.id}`)">
           <v-list-item class="movie">
             <v-list-item-content>
               <v-list-item-title class="headline">{{ movie.title }}</v-list-item-title>
@@ -21,13 +21,9 @@
           <v-card-text v-if="movie.stars<40">{{ movie.stars }}</v-card-text>
           <v-card-text v-else>{{ movie.stars.substring(0,50)+".." }}</v-card-text>
 
-          <v-card-text>Follow any of the following:</v-card-text>
-          <v-card-actions v-if="isLoggedIn">
-            <v-btn color="info" @click="followMovie(movie.id)">Movie</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn color="info">Genre</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn color="info">Stars</v-btn>
+          <v-card-actions v-if="user && user.followedMovies">
+            <v-btn v-if="user.followedMovies.has(movie.id)" color="info" @click="unfollowMovie(movie.id)">Unfollow</v-btn>
+            <v-btn v-else color="info" @click="followMovie(movie.id)">Follow</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -43,9 +39,9 @@ export default {
     movies(){
       return this.$store.getters.movies
     },
-    isLoggedIn() {
-      return this.$store.getters.isLoggedIn
-    }
+    user() {
+      return this.$store.getters.user
+    },
   },
   created(){
     this.$store.dispatch("getMovies")
@@ -53,6 +49,9 @@ export default {
   methods: {
     followMovie(id) {
       this.$store.dispatch('followMovie', id)
+    },
+    unfollowMovie(id) {
+      this.$store.dispatch('unfollowMovie', id)
     }
   }
 };

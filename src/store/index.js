@@ -17,7 +17,8 @@ export default new Vuex.Store({
   },
   getters: {
     isLoggedIn: (state) => state.isLoggedIn,
-    movies: (state) => state.movies
+    movies: (state) => state.movies,
+    user: (state) => state.user
   },
   mutations: {
     setAuthenticationStatus(state, payload) {
@@ -43,11 +44,24 @@ export default new Vuex.Store({
 
           // make call to /users/me
           Axios.get(`users/me`).then((response) => {
-            const user = response.data.data
-            return user
-            
+            console.log(response)
+            const user = {
+              ...response.data.data.attributes,
+              id: response.data.data.id,
+
+            }
+            user.followedMovies = new Set()
+            response.data.data.relationships.followed_movies.data.forEach((rel) => user.followedMovies.add(rel.id))
+
+            user.followedGenres = new Set()
+            response.data.data.relationships.followed_genres.data.forEach((rel) => user.followedGenres.add(rel.id))
+
+            user.followedStars = new Set()
+            response.data.data.relationships.followed_stars.data.forEach((rel) => user.followedStars.add(rel.id))
+
+            commit('setUser', user)
+
           })
-          commit('setUser', user)
           //  tell your app that the user is logged in
           commit('setAuthenticationStatus', true)
         }).catch(error => {
@@ -95,14 +109,95 @@ export default new Vuex.Store({
         })
       })
     },
-    followMovie: ({ commit }, movieId) => {
+    getMovie: ({ commit }, movieId) => {
+      return new Promise((resolve, reject) => {
+        Axios.get(`movies/${movieId}`).then((response) => {
+          console.log(response)
+
+          const movie = {
+            ...response.data.data.attributes,
+            id: response.data.data.id,
+            stars: "Tom Hanks, Rebecca Williams, Sally Field, Michael Conner Humphreys",
+            poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+          }
+
+          movie.genre = response.data.included.find(rel => rel.type === 'genre').attributes
+          movie.stars = response.data.included.filter(rel => rel.type === 'star').map(rel => ({ 
+            ...rel.attributes,
+            id: rel.id,
+          }))
+
+          resolve(movie)
+        })
+      })
+    },
+    followMovie: ({ commit, state }, movieId) => {
       return new Promise((resolve, reject) => {
         Axios.post(`movies/${movieId}/follow`)
-          .then((data) => {
-            console.log(data)
+          .then((response) => {
+            const user = state.user
+            user.followedMovies = new Set()
+            response.data.data.forEach((rel) => user.followedMovies.add(rel.id))
+            commit('setUser', user)
+          })
+      })
+    },
+    unfollowMovie: ({ commit, state }, movieId) => {
+      return new Promise((resolve, reject) => {
+        Axios.delete(`movies/${movieId}/unfollow`)
+          .then((response) => {
+            const user = state.user
+            user.followedMovies = new Set()
+            response.data.data.forEach((rel) => user.followedMovies.add(rel.id))
+            commit('setUser', user)
+          })
+      })
+    },
+    followStar: ({ commit, state }, starId) => {
+      return new Promise((resolve, reject) => {
+        Axios.post(`stars/${starId}/follow`)
+          .then((response) => {
+            const user = state.user
+            user.followedStars = new Set()
+            response.data.data.forEach((rel) => user.followedStars.add(rel.id))
+            commit('setUser', user)
+          })
+      })
+    },
+    unfollowStar: ({ commit, state }, starId) => {
+      return new Promise((resolve, reject) => {
+        Axios.delete(`stars/${starId}/unfollow`)
+          .then((response) => {
+            const user = state.user
+            user.followedStars = new Set()
+            response.data.data.forEach((rel) => user.followedStars.add(rel.id))
+            commit('setUser', user)
+          })
+      })
+    },
+    followGenre: ({ commit, state }, genreId) => {
+      return new Promise((resolve, reject) => {
+        Axios.post(`genres/${genreId}/follow`)
+          .then((response) => {
+            const user = state.user
+            user.followedGenres = new Set()
+            response.data.data.relationships.genre.forEach((rel) => user.followedGenres.add(rel.id))
+            commit('setUser', user)
+          })
+      })
+    },
+    unfollowGenre: ({ commit, state }, genreId) => {
+      return new Promise((resolve, reject) => {
+        Axios.delete(`genres/${genreId}/unfollow`)
+          .then((response) => {
+            const user = state.user
+            user.followedGenres = new Set()
+            response.data.data.forEach((rel) => user.followedGenres.add(rel.id))
+            commit('setUser', user)
           })
       })
     }
+
 
   },
   modules: {
