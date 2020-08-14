@@ -13,7 +13,8 @@ export default new Vuex.Store({
   state: {
     isLoggedIn: false,
     user: {},
-    movies: []
+    movies: [],
+    recommendations: {}
   },
   getters: {
     isLoggedIn: (state) => state.isLoggedIn,
@@ -121,7 +122,11 @@ export default new Vuex.Store({
             poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
           }
 
-          movie.genre = response.data.included.find(rel => rel.type === 'genre').attributes
+          const genre = response.data.included.find(rel => rel.type === 'genre')
+          movie.genre = {
+            ...genre.attributes,
+            id: genre.id
+          }
           movie.stars = response.data.included.filter(rel => rel.type === 'star').map(rel => ({ 
             ...rel.attributes,
             id: rel.id,
@@ -181,7 +186,7 @@ export default new Vuex.Store({
           .then((response) => {
             const user = state.user
             user.followedGenres = new Set()
-            response.data.data.relationships.genre.forEach((rel) => user.followedGenres.add(rel.id))
+            response.data.data.forEach((rel) => user.followedGenres.add(rel.id))
             commit('setUser', user)
           })
       })
