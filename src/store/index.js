@@ -94,11 +94,12 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Axios.get(`movies`).then((response) => {
           const movies = response.data.data.map((movie) => {
+            console.log(movie)
             const m = {
               ...movie.attributes,
+              poster: `http://image.tmdb.org/t/p/w500${movie.attributes.poster}`,
               id: movie.id,
               stars: "Tom Hanks, Rebecca Williams, Sally Field, Michael Conner Humphreys",
-              poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
             }
 
             m.genre = response.data.included.find(rel => rel.type === 'genre').attributes
@@ -114,12 +115,11 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Axios.get(`movies/${movieId}`).then((response) => {
           console.log(response)
-
           const movie = {
             ...response.data.data.attributes,
             id: response.data.data.id,
             stars: "Tom Hanks, Rebecca Williams, Sally Field, Michael Conner Humphreys",
-            poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+            poster: `http://image.tmdb.org/t/p/w500${response.data.data.attributes.poster}`,
           }
 
           const genre = response.data.included.find(rel => rel.type === 'genre')

@@ -14,15 +14,8 @@
 
         <v-col class="mb-5">
           <h1 class="display-2 font-weight-bold mb-5">Welcome to White Curtain</h1>
-          <v-btn
-            v-for="link in links"
-            :key="`${link.label}-login-link`"
-            color="error"
-            height="50px"
-            width="100px"
-            rounded
-            :to="link.url"
-          >Login</v-btn>
+          <v-btn v-if="isLoggedIn" color="error" height="50px" width="100px" rounded @click="$router.push(`/movies`)">Movies</v-btn>
+          <v-btn v-else color="error" height="50px" width="100px" rounded @click="$router.push(`/login`)">Login</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -36,24 +29,7 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
-    },
-    links() {
-      const baseLinks = [];
-      if (this.isLoggedIn) {
-        baseLinks.push({
-          label: "Movies",
-          url: "/movies"
-        });
-      } else {
-        baseLinks.push(
-          {
-            label: "Login",
-            url: "/login"
-          }
-      );
-      return baseLinks;
-      }
-    },
+    }
   },
 };
 </script>

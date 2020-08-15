@@ -12,22 +12,38 @@
 
           <v-img :src="movie.poster" height="300" />
 
+
           <v-card-text>
+            {{ movie.description }}
             <ul>
               <li v-for="star in movie.stars" :key="star.name">
-                  {{star.name}}
-                  <v-btn v-if="user.followedStars.has(star.id)" color="info" @click="unfollowStar(star.id)">Unfollow </v-btn>
-                    <v-btn v-else color="info" @click="followStar(star.id)">Follow </v-btn> 
-                </li>
+                {{star.name}}
+                <v-btn
+                  v-if="user.followedStars.has(star.id)"
+                  color="warning"
+                  @click="unfollowStar(star.id)"
+                >Unfollow</v-btn>
+                <v-btn v-else color="info" @click="followStar(star.id)">Follow</v-btn>
+              </li>
             </ul>
           </v-card-text>
 
           <v-card-actions v-if="user && user.followedGenres">
-            <v-btn v-if="user.followedGenres.has(movie.genre.id)" color="info" @click="unfollowGenre(movie.genre.id)">Unfollow {{ movie.genre.name }} </v-btn>
-            <v-btn v-else color="info" @click="followGenre(movie.genre.id)">Follow  {{ movie.genre.name }} </v-btn>
+            <v-btn
+              v-if="user.followedGenres.has(movie.genre.id)"
+              color="warning"
+              @click="unfollowGenre(movie.genre.id)"
+            >Unfollow {{ movie.genre.name }}</v-btn>
+            <v-btn
+              v-else
+              color="info"
+              @click="followGenre(movie.genre.id)"
+            >Follow {{ movie.genre.name }}</v-btn>
           </v-card-actions>
-          
         </v-card>
+        <div class="back_button">
+          <v-btn color="error" @click="$router.push(`/movies`)">Back to Movies</v-btn>
+        </div>
       </v-flex>
     </v-layout>
   </div>
@@ -72,5 +88,9 @@ export default {
 <style>
 .movie {
   background-color: #f44336;
+}
+.back_button {
+  text-align: center;
+  margin-top: 50px;
 }
 </style>
