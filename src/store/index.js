@@ -94,7 +94,6 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Axios.get(`movies`).then((response) => {
           const movies = response.data.data.map((movie) => {
-            console.log(movie)
             const m = {
               ...movie.attributes,
               poster: `http://image.tmdb.org/t/p/w500${movie.attributes.poster}`,
@@ -114,7 +113,6 @@ export default new Vuex.Store({
     getMovie: ({ commit }, movieId) => {
       return new Promise((resolve, reject) => {
         Axios.get(`movies/${movieId}`).then((response) => {
-          console.log(response)
           const movie = {
             ...response.data.data.attributes,
             id: response.data.data.id,
