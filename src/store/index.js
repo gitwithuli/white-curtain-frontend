@@ -100,7 +100,7 @@ export default new Vuex.Store({
               id: movie.id,
               stars: "Tom Hanks, Rebecca Williams, Sally Field, Michael Conner Humphreys",
             }
-
+            // console.log(response)
             m.genre = response.data.included.find(rel => rel.type === 'genre').attributes
 
             return m
