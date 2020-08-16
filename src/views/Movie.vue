@@ -16,14 +16,15 @@
           <v-card-text>
             {{ movie.description }}
             <ul>
-              <li v-for="star in movie.stars" :key="star.name">
+              <li class="font-weight-bold" v-for="star in movie.stars" :key="star.name">
                 {{star.name}}
+                <v-spacer></v-spacer>
                 <v-btn
                   v-if="user.followedStars.has(star.id)"
                   color="warning"
                   @click="unfollowStar(star.id)"
                 >Unfollow</v-btn>
-                <v-btn v-else color="info" @click="followStar(star.id)">Follow</v-btn>
+                <v-btn v-else color="success" @click="followStar(star.id)">Follow</v-btn>
               </li>
             </ul>
           </v-card-text>
@@ -41,7 +42,7 @@
             >Follow {{ movie.genre.name }}</v-btn>
           </v-card-actions>
         </v-card>
-        <div class="back_button">
+        <div class="back_button mb-5">
           <v-btn color="error" @click="$router.push(`/movies`)">Back to Movies</v-btn>
         </div>
       </v-flex>

@@ -34,10 +34,20 @@ export default {
         },
       ];
       if (this.isLoggedIn) {
-        baseLinks.push({
-          label: "Logout",
-          url: "/logout",
-        });
+        baseLinks.push(
+          {
+            label: "Movies",
+            url: "/movies",
+          },
+          {
+            label: "Recommendations",
+            url: "/recommendations",
+          },
+          {
+            label: "Logout",
+            url: "/logout",
+          }
+        );
       } else {
         baseLinks.push(
           {
@@ -50,7 +60,7 @@ export default {
           }
         );
       }
-      return baseLinks
+      return baseLinks;
     },
   },
 };

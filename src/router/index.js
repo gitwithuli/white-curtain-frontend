@@ -29,6 +29,11 @@ Vue.use(VueRouter)
     path: '/movies/:movieId',
     name: 'Movie',
     component: () => import('../views/Movie.vue')
+  },
+  {
+    path: 'recommendations',
+    name: 'Recommendations',
+    component: () => import('../views/Recommendations.vue')
   }
 ]
 

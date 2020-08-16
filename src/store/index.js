@@ -19,7 +19,8 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn: (state) => state.isLoggedIn,
     movies: (state) => state.movies,
-    user: (state) => state.user
+    user: (state) => state.user,
+    recommendations: (state) => state.recommendations
   },
   mutations: {
     setAuthenticationStatus(state, payload) {
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     setUser(state, payload) {
       state.user = payload
+    },
+    setRecommendations(state, payload) {
+      state.recommendations = payload
     }
   },
   actions: {
@@ -94,6 +98,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Axios.get(`movies`).then((response) => {
           const movies = response.data.data.map((movie) => {
+            // console.log(movie)
             const m = {
               ...movie.attributes,
               poster: `http://image.tmdb.org/t/p/w500${movie.attributes.poster}`,
@@ -102,7 +107,7 @@ export default new Vuex.Store({
             }
             // console.log(response)
             m.genre = response.data.included.find(rel => rel.type === 'genre').attributes
-
+            
             return m
           })
           commit('setMovies', movies)
@@ -198,6 +203,19 @@ export default new Vuex.Store({
             response.data.data.forEach((rel) => user.followedGenres.add(rel.id))
             commit('setUser', user)
           })
+      })
+    },
+    getRecommendations: ({ commit }) => {
+      return new Promise((resolve, reject) => {
+        Axios.get(`movies/recommendations`).then((response) => {
+          console.log(response)
+          const recommendations = response.data.data.map((recommendation) => {
+            
+            
+          })
+          commit('setRecommendations', recommendations)
+
+        })
       })
     }
 

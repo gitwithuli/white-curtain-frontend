@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-center">
-      <h1 class="mt-3 mb-5">Top Rated Movies</h1>
+      <h1 class="mt-3 mb-5">Suggestions based on your follows</h1>
     </div>
     <v-layout row wrap>
       <v-flex xs12 md6 lg4 v-for="movie in movies" :key="movie.title">
@@ -37,34 +37,19 @@
   </div>
 </template>
 
-
 <script>
 // import MovieCards from "../components/MovieCards";
 export default {
   computed: {
-    movies() {
-      return this.$store.getters.movies;
+    recommendations() {
+      return this.$store.getters.recommendations;
     },
     user() {
       return this.$store.getters.user;
     },
   },
   created() {
-    this.$store.dispatch("getMovies");
-  },
-  methods: {
-    followMovie(id) {
-      this.$store.dispatch("followMovie", id);
-    },
-    unfollowMovie(id) {
-      this.$store.dispatch("unfollowMovie", id);
-    },
+    this.$store.dispatch("getRecommendations");
   },
 };
 </script>
-
-<style>
-.movie {
-  background-color: #f44336;
-}
-</style>
