@@ -208,9 +208,9 @@ export default new Vuex.Store({
     getRecommendations: ({ commit }) => {
       return new Promise((resolve, reject) => {
         Axios.get(`movies/recommendations`).then((response) => {
-          console.log(response)
+          
           const recommendations = response.data.data.map((recommendation) => {
-            
+            console.log(response)
             
           })
           commit('setRecommendations', recommendations)

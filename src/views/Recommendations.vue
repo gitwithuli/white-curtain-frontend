@@ -19,9 +19,6 @@
             <v-card-text v-if="movie.description<100">{{ movie.description }}</v-card-text>
             <v-card-text v-else>{{ movie.description.substring(0,100)+".." }}</v-card-text>
 
-            <!-- <v-card-text v-if="movie.stars<40">{{ movie.stars }}</v-card-text>
-            <v-card-text v-else>{{ movie.stars.substring(0,50)+".." }}</v-card-text> -->
-
             <v-card-actions v-if="user && user.followedMovies">
               <v-btn
                 v-if="user.followedMovies.has(movie.id)"
