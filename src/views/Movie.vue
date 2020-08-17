@@ -20,7 +20,7 @@
                 {{star.name}}
                 <v-spacer></v-spacer>
                 <v-btn
-                  v-if="user.followedStars.has(star.id)"
+                  v-if="user.followedStars[star.id]"
                   color="warning"
                   @click="unfollowStar(star.id)"
                 >Unfollow</v-btn>
@@ -31,7 +31,7 @@
 
           <v-card-actions v-if="user && user.followedGenres">
             <v-btn
-              v-if="user.followedGenres.has(movie.genre.id)"
+              v-if="user.followedGenres[movie.genre.id]"
               color="warning"
               @click="unfollowGenre(movie.genre.id)"
             >Unfollow {{ movie.genre.name }}</v-btn>
@@ -62,7 +62,7 @@ export default {
       return this.$store.getters.user;
     },
   },
-  async created() {
+  async mounted() {
     const movie = await this.$store.dispatch(
       "getMovie",
       this.$route.params.movieId

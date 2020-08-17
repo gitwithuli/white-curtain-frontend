@@ -10,7 +10,7 @@
             <v-list-item class="movie">
               <v-list-item-content>
                 <v-list-item-title class="headline">{{ movie.title }}</v-list-item-title>
-                <v-list-item-subtitle>{{ movie.genre.name }}</v-list-item-subtitle>
+                
               </v-list-item-content>
             </v-list-item>
 
@@ -24,7 +24,7 @@
 
             <v-card-actions v-if="user && user.followedMovies">
               <v-btn
-                v-if="user.followedMovies.has(movie.id)"
+                v-if="user.followedMovies[movie.id]"
                 color="warning"
                 @click="unfollowMovie(movie.id)"
               >Unfollow</v-btn>
@@ -49,7 +49,7 @@ export default {
       return this.$store.getters.user;
     },
   },
-  created() {
+  mounted() {
     this.$store.dispatch("getMovies");
   },
   methods: {

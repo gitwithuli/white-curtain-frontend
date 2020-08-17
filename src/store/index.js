@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios';
+import createPersistedState from "vuex-persistedstate";
+
 
 Vue.use(Vuex)
 
@@ -41,6 +43,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Axios.post(`login`, payload).then(({ data, status }) => {
           const token = data.jwt
+          localStorage.setItem("jwt", token)
 
           Axios.interceptors.request.use(function (config) {
             config.headers.Authorization = `Bearer ${token})`
@@ -49,20 +52,19 @@ export default new Vuex.Store({
 
           // make call to /users/me
           Axios.get(`users/me`).then((response) => {
-            console.log(response)
             const user = {
               ...response.data.data.attributes,
               id: response.data.data.id,
 
             }
-            user.followedMovies = new Set()
-            response.data.data.relationships.followed_movies.data.forEach((rel) => user.followedMovies.add(rel.id))
+            user.followedMovies = {}
+            response.data.data.relationships.followed_movies.data.forEach((rel) => user.followedMovies[rel.id] = true)
 
-            user.followedGenres = new Set()
-            response.data.data.relationships.followed_genres.data.forEach((rel) => user.followedGenres.add(rel.id))
+            user.followedGenres = {}
+            response.data.data.relationships.followed_genres.data.forEach((rel) => user.followedGenres[rel.id] = true)
 
-            user.followedStars = new Set()
-            response.data.data.relationships.followed_stars.data.forEach((rel) => user.followedStars.add(rel.id))
+            user.followedStars = {}
+            response.data.data.relationships.followed_stars.data.forEach((rel) => user.followedStars[rel.id] = true)
 
             commit('setUser', user)
 
@@ -90,6 +92,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('setAuthenticationStatus', false)
         delete Axios.defaults.headers.common["Authorization"]
+        commit('setUser', null)
         resolve()
       })
     },
@@ -103,7 +106,6 @@ export default new Vuex.Store({
               ...movie.attributes,
               poster: `http://image.tmdb.org/t/p/w500${movie.attributes.poster}`,
               id: movie.id,
-              stars: "Tom Hanks, Rebecca Williams, Sally Field, Michael Conner Humphreys",
             }
             // console.log(response)
             m.genre = response.data.included.find(rel => rel.type === 'genre').attributes
@@ -143,9 +145,10 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Axios.post(`movies/${movieId}/follow`)
           .then((response) => {
+            console.log(response)
             const user = state.user
-            user.followedMovies = new Set()
-            response.data.data.forEach((rel) => user.followedMovies.add(rel.id))
+            user.followedMovies = {}
+            response.data.data.forEach((rel) => user.followedMovies[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -155,8 +158,8 @@ export default new Vuex.Store({
         Axios.delete(`movies/${movieId}/unfollow`)
           .then((response) => {
             const user = state.user
-            user.followedMovies = new Set()
-            response.data.data.forEach((rel) => user.followedMovies.add(rel.id))
+            user.followedMovies = {}
+            response.data.data.forEach((rel) => user.followedMovies[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -166,8 +169,8 @@ export default new Vuex.Store({
         Axios.post(`stars/${starId}/follow`)
           .then((response) => {
             const user = state.user
-            user.followedStars = new Set()
-            response.data.data.forEach((rel) => user.followedStars.add(rel.id))
+            user.followedStars = {}
+            response.data.data.forEach((rel) => user.followedStars[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -177,8 +180,8 @@ export default new Vuex.Store({
         Axios.delete(`stars/${starId}/unfollow`)
           .then((response) => {
             const user = state.user
-            user.followedStars = new Set()
-            response.data.data.forEach((rel) => user.followedStars.add(rel.id))
+            user.followedStars = {}
+            response.data.data.forEach((rel) => user.followedStars[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -188,8 +191,8 @@ export default new Vuex.Store({
         Axios.post(`genres/${genreId}/follow`)
           .then((response) => {
             const user = state.user
-            user.followedGenres = new Set()
-            response.data.data.forEach((rel) => user.followedGenres.add(rel.id))
+            user.followedGenres = {}
+            response.data.data.forEach((rel) => user.followedGenres[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -199,8 +202,8 @@ export default new Vuex.Store({
         Axios.delete(`genres/${genreId}/unfollow`)
           .then((response) => {
             const user = state.user
-            user.followedGenres = new Set()
-            response.data.data.forEach((rel) => user.followedGenres.add(rel.id))
+            user.followedGenres = {}
+            response.data.data.forEach((rel) => user.followedGenres[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -208,12 +211,18 @@ export default new Vuex.Store({
     getRecommendations: ({ commit }) => {
       return new Promise((resolve, reject) => {
         Axios.get(`movies/recommendations`).then((response) => {
-          
-          const recommendations = response.data.data.map((recommendation) => {
-            console.log(response)
-            
-          })
-          commit('setRecommendations', recommendations)
+          const movies = response.data.by_genre.data.map((movie) => {
+            const m = {
+              title: movie.attributes.title,
+              description: movie.attributes.description,
+              year: movie.attributes.year,
+              poster: `http://image.tmdb.org/t/p/w500${movie.attributes.poster}`,
+              id: movie.id
+            }
+            // m.genre = response.data.included.find(rel => rel.type === 'genre').attributes
+            return m
+          }) 
+          commit('setRecommendations', movies)
 
         })
       })
@@ -221,6 +230,7 @@ export default new Vuex.Store({
 
 
   },
+  plugins: [createPersistedState()],
   modules: {
   }
 })

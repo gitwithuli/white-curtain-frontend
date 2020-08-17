@@ -11,7 +11,14 @@ Vue.component('ValidationProvider', ValidationProvider);
 
 Vue.config.productionTip = false
 
-Axios.defaults.baseURL = 'http://localhost:3000/api/v1/';
+Axios.defaults.baseURL = process.env.VUE_APP_API_URL
+
+if (localStorage.getItem("jwt")) {
+  Axios.interceptors.request.use(function (config) {
+    config.headers.Authorization = `Bearer ${localStorage.getItem("jwt")})`
+    return config
+  })
+}
 
 Vue.use(Notifications)
 
