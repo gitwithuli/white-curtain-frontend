@@ -51,24 +51,26 @@ export default new Vuex.Store({
           })
 
           // make call to /users/me
-          Axios.get(`users/me`).then((response) => {
+          const userData = data.user
+          console.log(userData)
             const user = {
-              ...response.data.data.attributes,
-              id: response.data.data.id,
+              
+              ...userData.data.attributes,
+              id: userData.data.id,
 
             }
             user.followedMovies = {}
-            response.data.data.relationships.followed_movies.data.forEach((rel) => user.followedMovies[rel.id] = true)
+            userData.data.relationships.followed_movies.data.forEach((rel) => user.followedMovies[rel.id] = true)
 
             user.followedGenres = {}
-            response.data.data.relationships.followed_genres.data.forEach((rel) => user.followedGenres[rel.id] = true)
+            userData.data.relationships.followed_genres.data.forEach((rel) => user.followedGenres[rel.id] = true)
 
             user.followedStars = {}
-            response.data.data.relationships.followed_stars.data.forEach((rel) => user.followedStars[rel.id] = true)
+            userData.data.relationships.followed_stars.data.forEach((rel) => user.followedStars[rel.id] = true)
 
             commit('setUser', user)
 
-          })
+         
           //  tell your app that the user is logged in
           commit('setAuthenticationStatus', true)
         }).catch(error => {
@@ -92,7 +94,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('setAuthenticationStatus', false)
         delete Axios.defaults.headers.common["Authorization"]
-        commit('setUser', null)
+        commit('setUser', {})
         resolve()
       })
     },
