@@ -46,7 +46,7 @@ export default new Vuex.Store({
           localStorage.setItem("jwt", token)
 
           Axios.interceptors.request.use(function (config) {
-            config.headers.Authorization = `Bearer ${token})`
+            config.headers.Authorization = `Bearer ${token}`
             return config
           })
 
