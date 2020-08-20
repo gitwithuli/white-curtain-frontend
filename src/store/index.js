@@ -150,7 +150,7 @@ export default new Vuex.Store({
             console.log(response)
             const user = state.user
             user.followedMovies = {}
-            response.data.data.forEach((rel) => user.followedMovies[rel.id] = true)
+            response.data.forEach((rel) => user.followedMovies[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -161,7 +161,7 @@ export default new Vuex.Store({
           .then((response) => {
             const user = state.user
             user.followedMovies = {}
-            response.data.data.forEach((rel) => user.followedMovies[rel.id] = true)
+            response.data.forEach((rel) => user.followedMovies[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -172,7 +172,7 @@ export default new Vuex.Store({
           .then((response) => {
             const user = state.user
             user.followedStars = {}
-            response.data.data.forEach((rel) => user.followedStars[rel.id] = true)
+            response.data.forEach((rel) => user.followedStars[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -183,7 +183,7 @@ export default new Vuex.Store({
           .then((response) => {
             const user = state.user
             user.followedStars = {}
-            response.data.data.forEach((rel) => user.followedStars[rel.id] = true)
+            response.data.forEach((rel) => user.followedStars[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -194,7 +194,7 @@ export default new Vuex.Store({
           .then((response) => {
             const user = state.user
             user.followedGenres = {}
-            response.data.data.forEach((rel) => user.followedGenres[rel.id] = true)
+            response.data.forEach((rel) => user.followedGenres[rel.id] = true)
             commit('setUser', user)
           })
       })
@@ -205,7 +205,7 @@ export default new Vuex.Store({
           .then((response) => {
             const user = state.user
             user.followedGenres = {}
-            response.data.data.forEach((rel) => user.followedGenres[rel.id] = true)
+            response.data.forEach((rel) => user.followedGenres[rel.id] = true)
             commit('setUser', user)
           })
       })
