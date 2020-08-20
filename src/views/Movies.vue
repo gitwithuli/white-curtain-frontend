@@ -10,7 +10,6 @@
             <v-list-item class="movie">
               <v-list-item-content>
                 <v-list-item-title class="headline">{{ movie.title }}</v-list-item-title>
-                
               </v-list-item-content>
             </v-list-item>
 
@@ -20,7 +19,7 @@
             <v-card-text v-else>{{ movie.description.substring(0,100)+".." }}</v-card-text>
 
             <!-- <v-card-text v-if="movie.stars<40">{{ movie.stars }}</v-card-text>
-            <v-card-text v-else>{{ movie.stars.substring(0,50)+".." }}</v-card-text> -->
+            <v-card-text v-else>{{ movie.stars.substring(0,50)+".." }}</v-card-text>-->
             <v-card-actions v-if="user && user.followedMovies">
               <v-btn
                 v-if="user.followedMovies[movie.id]"
@@ -47,6 +46,9 @@ export default {
     user() {
       return this.$store.getters.user;
     },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    },
   },
   mounted() {
     this.$store.dispatch("getMovies");
@@ -55,20 +57,20 @@ export default {
     followMovie(id) {
       this.$store.dispatch("followMovie", id);
       this.$notify({
-            group: "foo",
-            type: "warn",
-            title: "Successfull.",
-            text: "Followed movie.",
-          });
+        group: "foo",
+        type: "warn",
+        title: "Successfull.",
+        text: "Followed movie.",
+      });
     },
     unfollowMovie(id) {
       this.$store.dispatch("unfollowMovie", id);
-            this.$notify({
-            group: "foo",
-            type: "warn",
-            title: "Successfull.",
-            text: "Unfollowed movie.",
-          });
+      this.$notify({
+        group: "foo",
+        type: "warn",
+        title: "Successfull.",
+        text: "Unfollowed movie.",
+      });
     },
   },
 };

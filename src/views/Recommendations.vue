@@ -46,6 +46,9 @@ export default {
     user() {
       return this.$store.getters.user;
     },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    },
   },
   mounted() {
     this.$store.dispatch("getRecommendations");
@@ -53,59 +56,59 @@ export default {
   methods: {
     followMovie(id) {
       this.$store.dispatch("followMovie", id);
-            this.$notify({
-            group: "foo",
-            type: "warn",
-            title: "Successfull.",
-            text: "Followed movie.",
-          });
+      this.$notify({
+        group: "foo",
+        type: "warn",
+        title: "Successfull.",
+        text: "Followed movie.",
+      });
     },
     unfollowMovie(id) {
       this.$store.dispatch("unfollowMovie", id);
-            this.$notify({
-            group: "foo",
-            type: "warn",
-            title: "Successfull.",
-            text: "Unfollowed movie.",
-          });
+      this.$notify({
+        group: "foo",
+        type: "warn",
+        title: "Successfull.",
+        text: "Unfollowed movie.",
+      });
     },
     followStar(id) {
       this.$store.dispatch("followStar", id);
-            this.$notify({
-            group: "foo",
-            type: "warn",
-            title: "Successfull.",
-            text: "Followed star.",
-          });
+      this.$notify({
+        group: "foo",
+        type: "warn",
+        title: "Successfull.",
+        text: "Followed star.",
+      });
     },
     unfollowStar(id) {
       this.$store.dispatch("unfollowStar", id);
-            this.$notify({
-            group: "foo",
-            type: "warn",
-            title: "Successfull.",
-            text: "Unfollowed star.",
-          });
+      this.$notify({
+        group: "foo",
+        type: "warn",
+        title: "Successfull.",
+        text: "Unfollowed star.",
+      });
     },
     followGenre(id) {
       this.$store.dispatch("followGenre", id);
-            this.$notify({
-            group: "foo",
-            type: "warn",
-            title: "Successfull.",
-            text: "Followed genre.",
-          });
+      this.$notify({
+        group: "foo",
+        type: "warn",
+        title: "Successfull.",
+        text: "Followed genre.",
+      });
     },
     unfollowGenre(id) {
       this.$store.dispatch("unfollowGenre", id);
-            this.$notify({
-            group: "foo",
-            type: "warn",
-            title: "Successfull.",
-            text: "Unfollowed genre.",
-          });
+      this.$notify({
+        group: "foo",
+        type: "warn",
+        title: "Successfull.",
+        text: "Unfollowed genre.",
+      });
     },
-  }
+  },
 };
 </script>
 
