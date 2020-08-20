@@ -16,7 +16,7 @@
             <v-img
               :src="recommendation.poster"
               height="500"
-              @click="$router.push(`/movies/${movie.id}`)"
+              @click="$router.push(`/movies/${recommendation.id}`)"
             />
 
             <v-card-text v-if="recommendation.description<100">{{ recommendation.description }}</v-card-text>
@@ -53,21 +53,57 @@ export default {
   methods: {
     followMovie(id) {
       this.$store.dispatch("followMovie", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Followed movie.",
+          });
     },
     unfollowMovie(id) {
       this.$store.dispatch("unfollowMovie", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Unfollowed movie.",
+          });
     },
     followStar(id) {
       this.$store.dispatch("followStar", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Followed star.",
+          });
     },
     unfollowStar(id) {
       this.$store.dispatch("unfollowStar", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Unfollowed star.",
+          });
     },
     followGenre(id) {
       this.$store.dispatch("followGenre", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Followed genre.",
+          });
     },
     unfollowGenre(id) {
       this.$store.dispatch("unfollowGenre", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Unfollowed genre.",
+          });
     },
   }
 };

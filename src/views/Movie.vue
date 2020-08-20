@@ -44,6 +44,8 @@
         </v-card>
         <div class="back_button mb-5">
           <v-btn color="error" @click="$router.push(`/movies`)">Back to Movies</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="success" class="mt-5" @click="$router.push(`/recommendations`)">Back to Recommendations</v-btn>
         </div>
       </v-flex>
     </v-layout>
@@ -72,15 +74,39 @@ export default {
   methods: {
     followStar(id) {
       this.$store.dispatch("followStar", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Followed star.",
+          });
     },
     unfollowStar(id) {
       this.$store.dispatch("unfollowStar", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Unfollowed star.",
+          });
     },
     followGenre(id) {
       this.$store.dispatch("followGenre", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Followed genre.",
+          });
     },
     unfollowGenre(id) {
       this.$store.dispatch("unfollowGenre", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Unfollowed genre.",
+          });
     },
   },
 };

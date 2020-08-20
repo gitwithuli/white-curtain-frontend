@@ -21,7 +21,6 @@
 
             <!-- <v-card-text v-if="movie.stars<40">{{ movie.stars }}</v-card-text>
             <v-card-text v-else>{{ movie.stars.substring(0,50)+".." }}</v-card-text> -->
-
             <v-card-actions v-if="user && user.followedMovies">
               <v-btn
                 v-if="user.followedMovies[movie.id]"
@@ -55,9 +54,21 @@ export default {
   methods: {
     followMovie(id) {
       this.$store.dispatch("followMovie", id);
+      this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Followed movie.",
+          });
     },
     unfollowMovie(id) {
       this.$store.dispatch("unfollowMovie", id);
+            this.$notify({
+            group: "foo",
+            type: "warn",
+            title: "Successfull.",
+            text: "Unfollowed movie.",
+          });
     },
   },
 };

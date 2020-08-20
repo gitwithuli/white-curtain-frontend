@@ -54,15 +54,21 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return this.$store.getters.isLoggedIn
-    }
+      return this.$store.getters.isLoggedIn;
+    },
   },
   watch: {
     isLoggedIn(value) {
       if (value) {
-        this.$router.replace('/movies')
+        this.$router.replace("/movies");
+        this.$notify({
+          group: "foo",
+          type: "warn",
+          title: "Logged in successfully.",
+          text: "Welcome back to White Curtain.",
+        });
       }
-    }
+    },
   },
   methods: {
     login() {
@@ -73,14 +79,7 @@ export default {
             password: this.password,
           },
         })
-        .then((success) => {
-          this.$notify({
-            group: "foo",
-            type: "warn",
-            title: "Logged in successfully.",
-            text: "Welcome back to White Curtain.",
-          });
-        })
+        .then((success) => {})
         .catch((error) => {
           console.log(error);
           this.$notify({
