@@ -52,7 +52,6 @@ export default new Vuex.Store({
 
           // make call to /users/me
           const userData = data.user
-          console.log(userData)
             const user = {
               
               ...userData.data.attributes,
@@ -147,7 +146,6 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Axios.post(`movies/${movieId}/follow`)
           .then((response) => {
-            console.log(response)
             const user = state.user
             user.followedMovies = {}
             response.data.data.forEach((rel) => user.followedMovies[rel.id] = true)
