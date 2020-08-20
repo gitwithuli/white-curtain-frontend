@@ -146,6 +146,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Axios.post(`movies/${movieId}/follow`)
           .then((response) => {
+            const setAuthenticationStatus = state.setAuthenticationStatus
             const user = state.user
             user.followedMovies = {}
             response.data.data.forEach((rel) => user.followedMovies[rel.id] = true)
