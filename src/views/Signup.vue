@@ -105,12 +105,12 @@ export default {
           },
         })
         .then((success) => {
-          this.$router.push("/login");
+          this.$router.push("/movies");
           this.$notify({
             group: "foo",
             type: "warn",
             title: "Signed up successfully.",
-            text: "Please login to start your White Curtain journey.",
+            text: "Welcome to White Curtain.",
           });
           
         })

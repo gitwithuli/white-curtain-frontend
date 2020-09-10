@@ -46,30 +46,29 @@ export default new Vuex.Store({
           localStorage.setItem("jwt", token)
 
           Axios.interceptors.request.use(function (config) {
-            config.headers.Authorization = `Bearer ${token}`
+            config.headers.Authorization = `Bearer ${token})`
             return config
           })
 
           // make call to /users/me
-          const userData = data.user
+          Axios.get(`users/me`).then((response) => {
             const user = {
-              
-              ...userData.data.attributes,
-              id: userData.data.id,
+              ...response.data.data.attributes,
+              id: response.data.data.id,
 
             }
             user.followedMovies = {}
-            userData.data.relationships.followed_movies.data.forEach((rel) => user.followedMovies[rel.id] = true)
+            response.data.data.relationships.followed_movies.data.forEach((rel) => user.followedMovies[rel.id] = true)
 
             user.followedGenres = {}
-            userData.data.relationships.followed_genres.data.forEach((rel) => user.followedGenres[rel.id] = true)
+            response.data.data.relationships.followed_genres.data.forEach((rel) => user.followedGenres[rel.id] = true)
 
             user.followedStars = {}
-            userData.data.relationships.followed_stars.data.forEach((rel) => user.followedStars[rel.id] = true)
+            response.data.data.relationships.followed_stars.data.forEach((rel) => user.followedStars[rel.id] = true)
 
             commit('setUser', user)
 
-         
+          })
           //  tell your app that the user is logged in
           commit('setAuthenticationStatus', true)
         }).catch(error => {
@@ -93,7 +92,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('setAuthenticationStatus', false)
         delete Axios.defaults.headers.common["Authorization"]
-        commit('setUser', {})
+        commit('setUser', null)
         resolve()
       })
     },
@@ -146,6 +145,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Axios.post(`movies/${movieId}/follow`)
           .then((response) => {
+            console.log(response)
             const user = state.user
             user.followedMovies = {}
             response.data.data.forEach((rel) => user.followedMovies[rel.id] = true)
